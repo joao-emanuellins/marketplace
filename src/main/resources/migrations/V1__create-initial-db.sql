@@ -58,7 +58,7 @@ CREATE TABLE payments (
     user_id INT NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
     status ENUM('PENDING', 'COMPLETED', 'FAILED') NOT NULL,
-    payment_method ENUM('CREDIT_CARD', 'PIX', 'BOLETO', 'PAYPAL') NOT NULL,
+    payment_method ENUM('CREDIT_CARD', 'PIX', 'BOLETO') NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(id),
