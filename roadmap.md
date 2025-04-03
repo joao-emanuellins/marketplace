@@ -37,4 +37,4 @@
       * configs
         * kafka
         * domain
-* 
+* Criar o sql do projeto e configurar o flyway para o controle de migrations
