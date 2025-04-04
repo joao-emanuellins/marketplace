@@ -1,5 +1,6 @@
 package com.marketplace.adapters.outputs.respositories.entities
 
+import com.marketplace.application.core.domain.User
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -19,13 +20,32 @@ data class UserEntity(
     @Column(name = "password_hash", nullable = false) val passwordHash: String,
     @Enumerated(EnumType.STRING) @Column(name = "role", nullable = false) val role: Role,
     @Column(
-        name = "created_at",
-        nullable = false,
-        updatable = false
+        name = "created_at", nullable = false, updatable = false
     ) val createdAt: LocalDateTime = LocalDateTime.now(),
-    @Column(name = "updated_at", nullable = false) val updatedAt: LocalDateTime = LocalDateTime.now()
+    @Column(name = "updated_at", nullable = false) val updatedAt: LocalDateTime
 ) {
+    constructor(user: User) : this(
+        id = user.id ?: 0,
+        name = user.name,
+        email = user.email.value,
+        passwordHash = user.passwordHash!!,
+        role = Role.valueOf(user.role.name),
+        updatedAt = user.updatedAt ?: LocalDateTime.now()
+    )
+
     enum class Role {
         BUYER, SELLER, ADMIN
+    }
+
+    fun toDomain(): User {
+        return User(
+            id = id,
+            name = name,
+            email = User.Email(email),
+            passwordHash = passwordHash,
+            role = User.Role.valueOf(role.name),
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
     }
 }
