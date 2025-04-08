@@ -12,13 +12,19 @@ data class User(
 ) {
     data class LoginInfos(
         val email: Email,
-        val password: String? = null,
+        val password: Password? = null,
         val passwordHash: String? = null,
         val role: Role? = null,
     ) {
         data class Email(val value: String) {
             init {
                 require(value.contains("@") && value.contains(".")) { InvalidEmailFormatException("Invalid email format") }
+            }
+        }
+
+        data class Password(val value: String) {
+            init {
+                require(value.length >= 8) { "Password must be at least 8 characters long" }
             }
         }
 

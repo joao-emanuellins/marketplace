@@ -22,7 +22,7 @@ class SignUpUseCase(
         }
 
         val encryptedPassword = encryptOutputBound.encrypt(
-            user.loginInfos.password ?: throw ParameterNullException("Password cannot be null")
+            user.loginInfos.password?.value ?: throw ParameterNullException("Password cannot be null")
         )
         val newUser = user.copy(
             loginInfos = user.loginInfos.copy(

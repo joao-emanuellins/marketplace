@@ -22,7 +22,7 @@ class SignInUseCase(
 
         val isPasswordValid = encryptOutputBound.verifyPassword(
             userFound.loginInfos?.passwordHash ?: throw ParameterNullException("Password hash cannot be null"),
-            user.loginInfos.password ?: throw EntityNotFoundException("Password cannot be null")
+            user.loginInfos.password?.value ?: throw EntityNotFoundException("Password cannot be null")
         )
 
         if (!isPasswordValid) {
