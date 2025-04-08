@@ -15,10 +15,10 @@ data class UserResponse(
 ) {
     constructor(user: User) : this(
         id = user.id ?: throw ParameterNullException("User ID cannot be null"),
-        name = user.name,
+        name = user.name ?: throw ParameterNullException("User name cannot be null"),
         email = user.email.value,
         passwordHash = user.passwordHash ?: throw ParameterNullException("User password hash cannot be null"),
-        role = user.role.name,
+        role = user.role?.name ?: throw ParameterNullException("User role cannot be null"),
         createdAt = user.createdAt ?: throw ParameterNullException("User createdAt cannot be null"),
         updatedAt = user.updatedAt ?: throw ParameterNullException(
             "User updatedAt cannot be null"

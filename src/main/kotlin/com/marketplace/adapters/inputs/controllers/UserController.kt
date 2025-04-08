@@ -1,5 +1,6 @@
 package com.marketplace.adapters.inputs.controllers
 
+import com.marketplace.adapters.inputs.controllers.requests.UserSignInRequest
 import com.marketplace.adapters.inputs.controllers.requests.UserSignUpRequest
 import com.marketplace.adapters.inputs.controllers.responses.UserResponse
 import com.marketplace.application.core.domain.User
@@ -15,7 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/users")
 class UserController(
-    private val signUpUser: SignUpInputBound
+    private val signUpUser: SignUpInputBound,
+    private val signInUser: SignUpInputBound
 ) {
 
     @PostMapping("/sign-up")
@@ -30,6 +32,21 @@ class UserController(
         UserResponse(userCreated)
     }.fold(onSuccess = {
         ResponseEntity.status(HttpStatus.CREATED).body(it)
+    }, onFailure = {
+        ResponseEntity.badRequest().body(it.message)
+    })
+
+    @PostMapping("/sign-in")
+    fun signIn(@RequestBody @Valid userRequest: UserSignInRequest) = runCatching {
+        val user = with(userRequest) {
+            User(
+                email = User.Email(email), password = password,
+            )
+        }
+
+        signInUser(user)
+    }.fold(onSuccess = {
+        ResponseEntity.status(HttpStatus.OK).body(it)
     }, onFailure = {
         ResponseEntity.badRequest().body(it.message)
     })

@@ -8,5 +8,9 @@ import org.springframework.stereotype.Component
 class BCryptAdapter : EncryptOutputBound {
 
     override fun encrypt(password: String): String = BCryptPasswordEncoder().encode(password)
+    
+    override fun verifyPassword(passwordHash: String, password: String): Boolean =
+        BCryptPasswordEncoder().matches(password, passwordHash)
+
 
 }
