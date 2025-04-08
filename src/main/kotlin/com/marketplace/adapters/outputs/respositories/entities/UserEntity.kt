@@ -26,11 +26,11 @@ data class UserEntity(
 ) {
     constructor(user: User) : this(
         id = user.id ?: 0,
-        name = user.name,
-        email = user.email.value,
-        passwordHash = user.passwordHash!!,
-        role = Role.valueOf(user.role.name),
-        updatedAt = user.updatedAt ?: LocalDateTime.now()
+        name = user.name!!,
+        email = user.loginInfos!!.email.value,
+        passwordHash = user.loginInfos.passwordHash!!,
+        role = Role.valueOf(user.loginInfos.role!!.name),
+        updatedAt = user.auditInfos?.updatedAt ?: LocalDateTime.now()
     )
 
     enum class Role {
@@ -41,11 +41,15 @@ data class UserEntity(
         return User(
             id = id,
             name = name,
-            email = User.Email(email),
-            passwordHash = passwordHash,
-            role = User.Role.valueOf(role.name),
-            createdAt = createdAt,
-            updatedAt = updatedAt
+            loginInfos = User.LoginInfos(
+                email = User.LoginInfos.Email(email),
+                passwordHash = passwordHash,
+                role = User.LoginInfos.Role.valueOf(role.name)
+            ),
+            auditInfos = User.AuditInfos(
+                createdAt = createdAt,
+                updatedAt = updatedAt
+            )
         )
     }
 }

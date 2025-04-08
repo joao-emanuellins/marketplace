@@ -15,18 +15,22 @@ class SignInUseCase(
     private val credentialsGeneratorOutputBound: CredentialsGeneratorOutputBound
 ) : SignInInputBound {
     override fun invoke(user: User): User {
-        val userFound = userOutputBound.findByEmail(user.email.value)
+        val email = user.loginInfos?.email?.value ?: throw ParameterNullException("Email cannot be null")
+
+        val userFound = userOutputBound.findByEmail(email)
             ?: throw InvalidCredentialsException("User and/or email are invalid(s)")
 
         val isPasswordValid = encryptOutputBound.verifyPassword(
-            userFound.passwordHash ?: throw ParameterNullException("Password hash cannot be null"),
-            user.password ?: throw EntityNotFoundException("Password cannot be null")
+            userFound.loginInfos?.passwordHash ?: throw ParameterNullException("Password hash cannot be null"),
+            user.loginInfos.password ?: throw EntityNotFoundException("Password cannot be null")
         )
 
         if (!isPasswordValid) {
             throw InvalidCredentialsException("User and/or email are invalid(s)")
         }
 
-        return credentialsGeneratorOutputBound.generateAccessToken(userFound)
+        return userFound.copy(
+            accessInfos = credentialsGeneratorOutputBound.generateAccessToken(userFound)
+        )
     }
 }

@@ -6,7 +6,9 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import java.util.*
+import org.springframework.stereotype.Component
 
+@Component
 class JwtGeneratorAdapter : CredentialsGeneratorOutputBound {
 
     companion object {
@@ -14,14 +16,14 @@ class JwtGeneratorAdapter : CredentialsGeneratorOutputBound {
         private const val EXPIRATION_TIME = 10800000L
     }
 
-    override fun generateAccessToken(user: User): User {
+    override fun generateAccessToken(user: User): User.AccessInfos {
         val now = Date()
         val expiration = Date(now.time + EXPIRATION_TIME)
 
-        return user.copy(
+        return User.AccessInfos(
             accessToken = Jwts.builder()
                 .setSubject(user.id.toString())
-                .claim("email", user.email)
+                .claim("email", user.loginInfos?.email)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .signWith(Keys.hmacShaKeyFor(SECRET_KEY.toByteArray()), SignatureAlgorithm.HS256)

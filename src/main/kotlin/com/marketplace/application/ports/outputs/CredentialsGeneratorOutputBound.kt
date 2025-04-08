@@ -4,6 +4,6 @@ import com.marketplace.application.core.domain.User
 
 interface CredentialsGeneratorOutputBound {
 
-    fun generateAccessToken(user: User): User
+    fun generateAccessToken(user: User): User.AccessInfos
 
 }
