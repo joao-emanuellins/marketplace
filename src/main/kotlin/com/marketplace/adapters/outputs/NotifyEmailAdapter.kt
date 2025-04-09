@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 @Component
 class NotifyEmailAdapter : NotifyOutputBound {
     override fun notifyUserCreated(user: User) {
-        println("Email sent to ${user.email} with subject 'Welcome ${user.name}'")
+        println("Email sent to ${user.loginInfos?.email?.value} with subject 'Welcome ${user.name}'")
     }
 }
