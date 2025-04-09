@@ -1,8 +1,8 @@
 package com.marketplace.application.core.usecases
 
 import com.marketplace.application.core.domain.User
+import com.marketplace.application.core.exceptions.EntityAlreadyExistsException
 import com.marketplace.application.core.exceptions.ParameterNullException
-import com.marketplace.application.core.exceptions.UserAlreadyExistsException
 import com.marketplace.application.ports.inputs.SignUpInputBound
 import com.marketplace.application.ports.outputs.EncryptOutputBound
 import com.marketplace.application.ports.outputs.NotifyOutputBound
@@ -19,7 +19,7 @@ class SignUpUseCase(
             val email = user.loginInfos?.email?.value ?: throw ParameterNullException("Email cannot be null")
 
             if (userOutputBound.findByEmail(email) != null) {
-                throw UserAlreadyExistsException("User with email ${user.loginInfos.email.value} already exists")
+                throw EntityAlreadyExistsException("User with email ${user.loginInfos.email.value} already exists")
             }
 
             val encryptedPassword = encryptOutputBound.encrypt(
@@ -30,7 +30,7 @@ class SignUpUseCase(
                     passwordHash = encryptedPassword
                 )
             )
-            
+
             userOutputBound.save(newUser).also { notifyOutputBound.notifyUserCreated(it) }
         }
 }
