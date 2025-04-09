@@ -25,7 +25,9 @@ class UserController(
         val user = with(userRequest) {
             User(
                 name = name, loginInfos = User.LoginInfos(
-                    email = User.LoginInfos.Email(email), password = password, role = User.LoginInfos.Role.valueOf(role)
+                    email = User.LoginInfos.Email(email),
+                    password = User.LoginInfos.Password(password),
+                    role = User.LoginInfos.Role.valueOf(role)
                 )
             )
         }
@@ -43,7 +45,8 @@ class UserController(
         val user = with(userRequest) {
             User(
                 loginInfos = User.LoginInfos(
-                    email = User.LoginInfos.Email(email), password = password
+                    email = User.LoginInfos.Email(email),
+                    password = User.LoginInfos.Password(password)
                 )
             )
         }
