@@ -14,25 +14,25 @@ class SignInUseCase(
     private val encryptOutputBound: EncryptOutputBound,
     private val credentialsGeneratorOutputBound: CredentialsGeneratorOutputBound
 ) : SignInInputBound {
-    override fun invoke(user: User): User =
-        run {
-            val email = user.loginInfos?.email?.value ?: throw ParameterNullException("Email cannot be null")
+    override fun invoke(user: User): User = run {
+        val email = user.loginInfos?.email?.value ?: throw ParameterNullException(message = "Email cannot be null")
 
-            val userFound =
-                userOutputBound.findByEmail(email)
-                    ?: throw InvalidCredentialsException("User and/or email are invalid(s)")
+        val userFound = userOutputBound.findByEmail(email = email)
+            ?: throw InvalidCredentialsException(message = "User and/or email are invalid(s)")
 
-            val isPasswordValid = encryptOutputBound.verifyPassword(
-                userFound.loginInfos?.passwordHash ?: throw ParameterNullException("Password hash cannot be null"),
-                user.loginInfos.password?.value ?: throw EntityNotFoundException("Password cannot be null")
-            )
+        val isPasswordValid = encryptOutputBound.verifyPassword(
+            passwordHash = userFound.loginInfos?.passwordHash
+                ?: throw ParameterNullException(message = "Password hash cannot be null"),
+            password = user.loginInfos.password?.value
+                ?: throw EntityNotFoundException(message = "Password cannot be null")
+        )
 
-            if (!isPasswordValid) {
-                throw InvalidCredentialsException("User and/or email are invalid(s)")
-            }
-
-            userFound.copy(
-                accessInfos = credentialsGeneratorOutputBound.generateAccessToken(userFound)
-            )
+        if (!isPasswordValid) {
+            throw InvalidCredentialsException(message = "User and/or email are invalid(s)")
         }
+
+        userFound.copy(
+            accessInfos = credentialsGeneratorOutputBound.generateAccessToken(user = userFound)
+        )
+    }
 }

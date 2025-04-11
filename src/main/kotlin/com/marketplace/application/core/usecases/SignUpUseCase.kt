@@ -14,23 +14,23 @@ class SignUpUseCase(
     private val notifyOutputBound: NotifyOutputBound
 ) : SignUpInputBound {
 
-    override fun invoke(user: User): User =
-        run {
-            val email = user.loginInfos?.email?.value ?: throw ParameterNullException("Email cannot be null")
+    override fun invoke(user: User): User = run {
+        val email = user.loginInfos?.email?.value ?: throw ParameterNullException(message = "Email cannot be null")
 
-            if (userOutputBound.findByEmail(email) != null) {
-                throw EntityAlreadyExistsException("User with email ${user.loginInfos.email.value} already exists")
-            }
-
-            val encryptedPassword = encryptOutputBound.encrypt(
-                user.loginInfos.password?.value ?: throw ParameterNullException("Password cannot be null")
-            )
-            val newUser = user.copy(
-                loginInfos = user.loginInfos.copy(
-                    passwordHash = encryptedPassword
-                )
-            )
-
-            userOutputBound.save(newUser).also { notifyOutputBound.notifyUserCreated(it) }
+        if (userOutputBound.findByEmail(email) != null) {
+            throw EntityAlreadyExistsException("User with email ${user.loginInfos.email.value} already exists")
         }
+
+        val encryptedPassword = encryptOutputBound.encrypt(
+            password = user.loginInfos.password?.value
+                ?: throw ParameterNullException(message = "Password cannot be null")
+        )
+        val newUser = user.copy(
+            loginInfos = user.loginInfos.copy(
+                passwordHash = encryptedPassword
+            )
+        )
+
+        userOutputBound.save(newUser).also { notifyOutputBound.notifyUserCreated(user = it) }
+    }
 }

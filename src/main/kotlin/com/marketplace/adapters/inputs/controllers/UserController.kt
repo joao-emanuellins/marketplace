@@ -1,8 +1,6 @@
 package com.marketplace.adapters.inputs.controllers
 
-import com.marketplace.adapters.inputs.controllers.requests.UserSignInRequest
 import com.marketplace.adapters.inputs.controllers.requests.UserSignUpRequest
-import com.marketplace.adapters.inputs.controllers.responses.JwtTokenResponse
 import com.marketplace.adapters.inputs.controllers.responses.UserResponse
 import com.marketplace.application.core.domain.User
 import com.marketplace.application.ports.inputs.SignUpInputBound
@@ -17,9 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/users")
 class UserController(
-    private val signUpUser: SignUpInputBound, private val signInUser: SignUpInputBound
+    private val signUpUser: SignUpInputBound
 ) {
-
     @PostMapping("/sign-up")
     fun singUp(@RequestBody @Valid userRequest: UserSignUpRequest) = runCatching {
         val user = with(userRequest) {
@@ -36,23 +33,6 @@ class UserController(
         UserResponse(userCreated)
     }.fold(onSuccess = {
         ResponseEntity.status(HttpStatus.CREATED).body(it)
-    }, onFailure = {
-        ResponseEntity.badRequest().body(it.message)
-    })
-
-    @PostMapping("/sign-in")
-    fun signIn(@RequestBody @Valid userRequest: UserSignInRequest) = runCatching {
-        val user = with(userRequest) {
-            User(
-                loginInfos = User.LoginInfos(
-                    email = User.LoginInfos.Email(email), password = User.LoginInfos.Password(password)
-                )
-            )
-        }
-
-        JwtTokenResponse(signInUser(user))
-    }.fold(onSuccess = {
-        ResponseEntity.status(HttpStatus.OK).body(it)
     }, onFailure = {
         ResponseEntity.badRequest().body(it.message)
     })
