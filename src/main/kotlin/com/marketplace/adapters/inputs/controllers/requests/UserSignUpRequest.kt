@@ -13,7 +13,7 @@ data class UserSignUpRequest(
         message = "Password must be at least 8 characters long"
     ) val password: String,
     @field:NotBlank(message = "Role is required") @field:Pattern(
-        regexp = "^(SELLER|BUYER)$",
-        message = "Role must be either SELLER or BUYER"
+        regexp = "^(CUSTOMER|CAFETERIA)$",
+        message = "Role must be either CUSTOMER or CAFETERIA"
     ) val role: String,
 )

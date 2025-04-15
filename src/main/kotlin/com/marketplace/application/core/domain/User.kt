@@ -29,7 +29,7 @@ data class User(
         }
 
         enum class Role {
-            BUYER, SELLER, ADMIN
+            CAFETERIA, CUSTOMER, ADMIN
         }
     }
 
@@ -42,6 +42,4 @@ data class User(
         val createdAt: LocalDateTime? = null,
         val updatedAt: LocalDateTime? = null,
     )
-
-
 }

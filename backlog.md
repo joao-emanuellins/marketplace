@@ -1,97 +1,243 @@
-# 📌 Backlog do MVP - Marketplace
+# 🍟 Sistema de Pedidos para Lanchonetes - Casos de Uso (MVP)
 
-## **1️⃣ Gerenciamento de Usuários**
+## 🎭 Atores do Sistema
 
-### **UC01 - Cadastro de Usuário**
-- O usuário informa nome, e-mail, senha e papel (comprador ou vendedor).
-- O sistema valida e salva no banco.
-- O usuário recebe confirmação por e-mail (futuro).
-
-### **UC02 - Login**
-- O usuário informa e-mail e senha.
-- O sistema valida e retorna um token JWT.
-
-### **UC03 - Atualização de Perfil**
-- O usuário pode atualizar seus dados pessoais e senha.
+- **Lanchonete:** Representa o administrador do sistema, responsável por configurar e operar seu próprio restaurante.
+- **Cliente:** Usuário final que realiza pedidos no sistema.
 
 ---
 
-## **2️⃣ Gerenciamento de Lojas**
+## 🔐 1. Autenticação e Cadastro
 
-### **UC04 - Criar Loja**
-- O vendedor informa nome e descrição da loja.
-- O sistema vincula a loja ao usuário vendedor.
+### UC01 - Cadastro da Lanchonete
 
-### **UC05 - Atualizar Loja**
-- O vendedor pode alterar nome e descrição da loja.
+**Ator:** Lanchonete  
+**Descrição:** Permite que a lanchonete se cadastre para começar a utilizar o sistema.  
+**Funcionalidades:**
 
-### **UC06 - Listar Lojas**
-- O sistema retorna todas as lojas cadastradas.
-
----
-
-## **3️⃣ Gerenciamento de Produtos**
-
-### **UC07 - Criar Produto**
-- O vendedor informa nome, descrição, preço e estoque.
-- O sistema vincula o produto à loja do vendedor.
-
-### **UC08 - Atualizar Produto**
-- O vendedor pode alterar nome, descrição, preço e estoque.
-
-### **UC09 - Listar Produtos de uma Loja**
-- Retorna todos os produtos de uma loja específica.
-
-### **UC10 - Buscar Produto por Nome**
-- Retorna produtos filtrados pelo nome.
+- Nome da lanchonete, e-mail, senha, CNPJ, telefone, endereço.
+- Criação automática do painel de administração da lanchonete.
 
 ---
 
-## **4️⃣ Processo de Compra (Pedidos e Pagamentos)**
+### UC02 - Login (JWT)
 
-### **UC11 - Criar Pedido**
-- O comprador seleciona produtos de diferentes lojas.
-- O sistema calcula o valor total.
-- O pedido inicia com status "PENDING".
+**Atores:** Lanchonete, Cliente  
+**Descrição:** Autentica o usuário e gera tokens JWT.  
+**Funcionalidades:**
 
-### **UC12 - Adicionar Endereço ao Pedido**
-- O comprador seleciona ou cadastra um endereço.
-
-### **UC13 - Confirmar Pagamento**
-- O comprador escolhe o método de pagamento (cartão, boleto, Pix).
-- O sistema cria um registro de pagamento e altera o status do pedido para "PAID".
-
-### **UC14 - Alterar Status do Pedido**
-- O vendedor altera o status (PENDING → SHIPPED → DELIVERED).
-
-### **UC15 - Listar Pedidos do Comprador**
-- O sistema retorna o histórico de compras do usuário.
-
-### **UC16 - Listar Pedidos do Vendedor**
-- O sistema retorna os pedidos recebidos por uma loja.
+- Login com e-mail e senha.
+- Retorno de access token e refresh token.
 
 ---
 
-## **5️⃣ Gerenciamento de Endereços**
+### UC03 - Refresh Token
 
-### **UC17 - Cadastrar Endereço**
-- O usuário informa rua, cidade, estado e CEP.
+**Ator:** Sistema  
+**Descrição:** Gera um novo access token a partir do refresh token.  
+**Funcionalidades:**
 
-### **UC18 - Atualizar Endereço**
-- O usuário pode alterar um endereço cadastrado.
-
-### **UC19 - Listar Endereços do Usuário**
-- O sistema retorna os endereços cadastrados.
+- Verifica validade do token.
+- Gera novo access token.
 
 ---
 
-## **🚀 Fluxo Resumido do MVP**
+### UC04 - Cadastro do Cliente
 
-1️⃣ O **comprador** cria uma conta.
-2️⃣ O **vendedor** cria uma conta e uma loja.
-3️⃣ O **vendedor** adiciona produtos à sua loja.
-4️⃣ O **comprador** vê os produtos e adiciona ao pedido.
-5️⃣ O **comprador** seleciona um **endereço** e faz o pagamento.
-6️⃣ O **vendedor** processa o pedido e altera status até "DELIVERED".
+**Ator:** Cliente  
+**Descrição:** Permite que clientes se cadastrem no sistema.  
+**Funcionalidades:**
 
+- Nome, telefone, e-mail, senha.
+- Possibilidade de autenticação futura.
+
+---
+
+## 🏪 2. Gestão da Lanchonete
+
+### UC05 - Atualizar Informações da Lanchonete
+
+**Ator:** Lanchonete  
+**Descrição:** Atualiza dados cadastrais e de funcionamento.  
+**Funcionalidades:**
+
+- Nome, logotipo, horário, formas de pagamento, localização.
+
+---
+
+### UC06 - Configurar Tipos de Pedido
+
+**Ator:** Lanchonete  
+**Descrição:** Define se aceita delivery, retirada e/ou consumo no local.  
+**Funcionalidades:**
+
+- Marcar tipos permitidos de atendimento.
+
+---
+
+## 🍔 3. Gestão de Produtos e Categorias
+
+### UC07 - Cadastro de Categorias de Produto
+
+**Ator:** Lanchonete  
+**Descrição:** Permite criar categorias para organizar os produtos.  
+**Funcionalidades:**
+
+- Nome da categoria.
+- Ativação/desativação.
+
+---
+
+### UC08 - Cadastro de Produto
+
+**Ator:** Lanchonete  
+**Descrição:** Permite adicionar produtos que a lanchonete oferece.  
+**Funcionalidades:**
+
+- Nome, descrição, imagem, categoria, preço e disponibilidade.
+
+---
+
+### UC09 - Edição de Produto
+
+**Ator:** Lanchonete  
+**Descrição:** Permite atualizar ou remover produtos.  
+**Funcionalidades:**
+
+- Edição de preço, descrição, disponibilidade.
+
+---
+
+### UC10 - Listar Produtos
+
+**Atores:** Lanchonete, Cliente  
+**Descrição:** Exibe os produtos organizados por categoria.  
+**Funcionalidades:**
+
+- Filtro por categoria, busca por nome.
+
+---
+
+## 📋 4. Pedidos
+
+### UC11 - Criar Pedido
+
+**Ator:** Cliente  
+**Descrição:** Realiza um pedido via app ou site.  
+**Funcionalidades:**
+
+- Seleção de produtos.
+- Escolha de tipo (retirada, consumo local ou delivery).
+- Observações adicionais.
+
+---
+
+### UC12 - Gestão de Comandas (Consumo Local)
+
+**Ator:** Lanchonete  
+**Descrição:** Permite criar comandas para controle de pedidos nas mesas.  
+**Funcionalidades:**
+
+- Identificação por número ou código.
+- Vários pedidos associados a uma comanda.
+
+---
+
+### UC13 - Acompanhamento de Status do Pedido
+
+**Atores:** Cliente, Lanchonete  
+**Descrição:** Permite acompanhar a evolução de um pedido.  
+**Funcionalidades:**
+
+- Estados: Recebido, Em produção, Pronto, Saiu para entrega, Entregue.
+
+---
+
+### UC14 - Cancelamento de Pedido
+
+**Atores:** Cliente (enquanto não em produção), Lanchonete  
+**Descrição:** Permite cancelar um pedido.  
+**Funcionalidades:**
+
+- Registro de motivo.
+- Ajustes de estoque (se aplicável).
+
+---
+
+## 💳 5. Pagamento e Financeiro
+
+### UC15 - Configurar Formas de Pagamento
+
+**Ator:** Lanchonete  
+**Descrição:** Define quais métodos de pagamento são aceitos.  
+**Funcionalidades:**
+
+- Cartão, Dinheiro, Pix, entre outros.
+
+---
+
+### UC16 - Registrar Pagamento
+
+**Ator:** Lanchonete  
+**Descrição:** Marca o pedido como pago.  
+**Funcionalidades:**
+
+- Escolha de forma de pagamento.
+- Registro do pagamento no sistema.
+
+---
+
+### UC17 - Relatórios de Vendas
+
+**Ator:** Lanchonete  
+**Descrição:** Permite consultar estatísticas e vendas.  
+**Funcionalidades:**
+
+- Totais por período, forma de pagamento, produto.
+
+---
+
+## 🚚 6. Entrega e Retirada
+
+### UC18 - Cadastro de Endereço para Entrega
+
+**Ator:** Cliente  
+**Descrição:** Cliente informa onde deseja receber o pedido.  
+**Funcionalidades:**
+
+- Rua, número, bairro, complemento, referência.
+
+---
+
+### UC19 - Acompanhamento da Entrega
+
+**Ator:** Cliente  
+**Descrição:** Cliente pode visualizar o progresso da entrega.  
+**Funcionalidades:**
+
+- Exibição do status atual do pedido.
+
+---
+
+## 👥 7. Funcionalidades do Cliente
+
+### UC20 - Histórico de Pedidos
+
+**Ator:** Cliente  
+**Descrição:** Permite visualizar pedidos anteriores.  
+**Funcionalidades:**
+
+- Listagem por data, status e valores.
+
+---
+
+### UC21 - Atualização de Perfil
+
+**Ator:** Cliente  
+**Descrição:** Cliente pode editar dados cadastrais.  
+**Funcionalidades:**
+
+- Nome, e-mail, senha, telefone.
+
+---
 

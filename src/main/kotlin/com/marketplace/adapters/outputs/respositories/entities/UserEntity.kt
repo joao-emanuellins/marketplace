@@ -34,7 +34,7 @@ data class UserEntity(
     )
 
     enum class Role {
-        BUYER, SELLER, ADMIN
+        CAFETERIA, CUSTOMER, ADMIN
     }
 
     fun toDomain(): User {
