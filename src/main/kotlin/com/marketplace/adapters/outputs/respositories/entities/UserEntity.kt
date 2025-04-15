@@ -19,11 +19,8 @@ data class UserEntity(
     @Column(name = "email", nullable = false, unique = true) val email: String,
     @Column(name = "password_hash", nullable = false) val passwordHash: String,
     @Enumerated(EnumType.STRING) @Column(name = "role", nullable = false) val role: Role,
-    @Column(
-        name = "created_at", nullable = false, updatable = false
-    ) val createdAt: LocalDateTime = LocalDateTime.now(),
-    @Column(name = "updated_at", nullable = false) val updatedAt: LocalDateTime
-) {
+    override var updatedAt: LocalDateTime
+) : AuditEntity(updatedAt = updatedAt) {
     constructor(user: User) : this(
         id = user.id ?: 0,
         name = user.name!!,

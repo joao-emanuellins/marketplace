@@ -1,0 +1,12 @@
+CREATE TABLE delivery_addresses (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    number VARCHAR(10) NOT NULL,
+    neighborhood VARCHAR(255) NOT NULL,
+    complement TEXT,
+    reference TEXT,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE
+);
