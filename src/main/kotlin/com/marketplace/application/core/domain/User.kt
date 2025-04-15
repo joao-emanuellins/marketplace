@@ -29,7 +29,7 @@ data class User(
         }
 
         enum class Role {
-            CAFETERIA, CUSTOMER, ADMIN
+            SELLER, BUYER, ADMIN
         }
     }
 
