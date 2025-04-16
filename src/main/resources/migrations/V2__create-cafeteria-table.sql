@@ -1,10 +1,12 @@
 CREATE TABLE cafeterias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
     document_number VARCHAR(18) NOT NULL UNIQUE,
     document_type ENUM('CPF', 'CNPJ') NOT NULL,
     phone VARCHAR(15),
     address TEXT,
+    description TEXT,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

@@ -19,7 +19,6 @@ class CustomUserDetailsService(
         User
             .builder()
             .username(this.loginInfos?.email?.value)
-            .password(this.loginInfos?.password?.value)
             .roles(this.loginInfos?.role?.name)
             .build()
 }
