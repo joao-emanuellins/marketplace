@@ -6,4 +6,8 @@ interface CredentialsGeneratorOutputBound {
 
     fun generateAccessToken(user: User): User.AccessInfos
 
+    fun extractLoginInfos(token: String): User.LoginInfos
+
+    fun isValid(token: String, email: String): Boolean
+
 }
